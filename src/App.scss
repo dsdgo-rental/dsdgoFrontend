@@ -1,0 +1,190 @@
+.app-wrapper {
+  background-color: #f4f4f9;
+  min-height: 100vh;
+}
+
+.main-header {
+  background-color: #f6f4f4;
+  color: rgb(9, 9, 9);
+  padding: 1.2rem 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.logo-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo-image {
+  height: 3rem;
+  width: auto;
+  object-fit: contain;
+}
+
+.logo-fallback {
+  background-color: #b22222;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: bold;
+  color: rgb(9, 9, 9);
+}
+
+.brand-title {
+  font-size: 3rem;
+  font-weight: 900;
+  letter-spacing: 1px;
+  margin-right: 17rem;
+  color: rgb(3, 3, 3);
+}
+
+.brand-tagline {
+  margin: 5px 0 0 0;
+  opacity: 0.9;
+  font-size: 0.9rem;
+   margin-right: 15.2rem;
+}
+
+.date-card {
+  background-color: white;
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+  border-top: 5px solid #8b0000;
+  justify-content: center;
+}
+
+.date-input {
+  border-color: #8b0000;
+}
+
+.date-input:focus {
+  border-color: #8b0000;
+  box-shadow: 0 0 0 0.2rem rgba(139, 0, 0, 0.25);
+}
+
+.date-row-bg {
+  background-image: url("/background2.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 16px;
+  padding: 60px 20px;
+  margin: 0;
+  min-height: 280px;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.btn-apply {
+  background-color: #8b0000;
+  border: none;
+}
+
+.btn-apply:hover {
+  background-color: #6d0000;
+}
+
+.btn-check-availability {
+  background-color: #8b0000;
+  border: none;
+}
+
+.btn-check-availability:hover {
+  background-color: #6d0000;
+}
+
+.btn-send-request {
+  background-color: #8b0000;
+  border: none;
+}
+
+.btn-send-request:hover {
+  background-color: #6d0000;
+}
+
+.btn-send-request:disabled {
+  background-color: #b33a3a;
+}
+
+.section-title {
+  color: #8b0000;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.car-card {
+  border-top: 4px solid #8b0000;
+  transition: transform 0.2s;
+}
+
+.car-card:hover {
+  transform: translateY(-5px);
+}
+
+.car-image {
+  height: 220px;
+  object-fit: cover;
+  background-color: #f0f0f0;
+}
+
+.car-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.car-spec {
+  margin-bottom: 8px;
+}
+
+.car-price {
+  margin-top: 8px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #8b0000;
+}
+
+.inquiry-card {
+  background-color: white;
+  border-radius: 24px;
+  padding: 1.8rem;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+  border-left: 8px solid #8b0000;
+}
+
+.inquiry-title {
+  color: #8b0000;
+}
+
+.inquiry-footer {
+  margin-top: 1rem;
+  color: #6c757d;
+  font-size: 0.875rem;
+}
+
+.inquiry-footer hr {
+  margin-bottom: 0.75rem;
+}
+
+.main-footer {
+  margin-top: 3rem;
+  padding-top: 1rem;
+  text-align: center;
+  color: #6c757d;
+  font-size: 0.875rem;
+  border-top: 1px solid #dee2e6;
+}
+
+@media (max-width: 768px) {
+  .logo-wrapper {
+    justify-content: center;
+  }
+
+  .brand-title {
+    font-size: 1.4rem;
+  }
+}

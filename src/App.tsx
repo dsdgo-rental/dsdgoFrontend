@@ -1,0 +1,482 @@
+import React, { useState } from "react";
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Button,
+  Card,
+  Alert,
+  Image,
+} from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.scss";
+
+interface Car {
+  id: number;
+  name: string;
+  brand: string;
+  pricePerDay: number;
+  image: string;
+  fuel: string;
+  seats: number;
+}
+
+interface InquiryForm {
+  name: string;
+  email: string;
+  phone: string;
+  message: string;
+}
+
+const carsData: Car[] = [
+  {
+    id: 1,
+    name: "XXXXXXX",
+    brand: "XXXXXXX",
+    pricePerDay: 189,
+    image: "/images/image1.png",
+    fuel: "Petrol",
+    seats: 4,
+  },
+  {
+    id: 2,
+    name: "XXXXXXX",
+    brand: "XXXXXXX",
+    pricePerDay: 229,
+    image: "/images/image2.png",
+    fuel: "Hybrid",
+    seats: 5,
+  },
+  {
+    id: 3,
+    name: "XXXXXXX",
+    brand: "XXXXXXX",
+    pricePerDay: 199,
+    image: "/images/image3.png",
+    fuel: "Electric",
+    seats: 4,
+  },
+  {
+    id: 4,
+    name: "XXXXXXX",
+    brand: "XXXXXXX",
+    pricePerDay: 279,
+    image: "/images/image4.png",
+    fuel: "Petrol",
+    seats: 5,
+  },
+  {
+    id: 5,
+    name: "XXXXXXX",
+    brand: "XXXXXXX",
+    pricePerDay: 169,
+    image: "/images/image5.png",
+    fuel: "Electric",
+    seats: 5,
+  },
+  {
+    id: 6,
+    name: "XXXXXXX",
+    brand: "XXXXXXX",
+    pricePerDay: 349,
+    image: "/images/image6.png",
+    fuel: "Diesel",
+    seats: 5,
+  },
+  {
+    id: 7,
+    name: "XXXXXXX",
+    brand: "XXXXXXX",
+    pricePerDay: 499,
+    image: "/images/image7.png",
+    fuel: "Petrol",
+    seats: 4,
+  },
+];
+
+const App: React.FC = () => {
+  const [pickupDate, setPickupDate] = useState<string>("");
+  const [returnDate, setReturnDate] = useState<string>("");
+  const [pickupTime, setPickupTime] = useState<string>("12:30");
+  const [returnTime, setReturnTime] = useState<string>("08:30");
+  const [selectedCar, setSelectedCar] = useState<Car | null>(null);
+  const [showForm, setShowForm] = useState<boolean>(false);
+  const [formData, setFormData] = useState<InquiryForm>({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+  const [submitStatus, setSubmitStatus] = useState<{
+    success: boolean;
+    message: string;
+  } | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+  const handlePickupDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPickupDate(e.target.value);
+  };
+
+  const handleReturnDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setReturnDate(e.target.value);
+  };
+
+  const handleRequestClick = (car: Car) => {
+    if (!pickupDate || !returnDate) {
+      setSubmitStatus({
+        success: false,
+        message: "Please select both pickup and return dates first.",
+      });
+      setTimeout(() => setSubmitStatus(null), 4000);
+      return;
+    }
+
+    setSelectedCar(car);
+    setShowForm(true);
+    setFormData({ name: "", email: "", phone: "", message: "" });
+    setSubmitStatus(null);
+    setTimeout(() => {
+      document
+        .getElementById("inquiry-section")
+        ?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+  };
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmitInquiry = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (
+      !formData.name.trim() ||
+      !formData.email.trim() ||
+      !formData.phone.trim()
+    ) {
+      setSubmitStatus({
+        success: false,
+        message: "Please fill in name, email and phone number.",
+      });
+      return;
+    }
+
+    if (!formData.email.includes("@")) {
+      setSubmitStatus({
+        success: false,
+        message: "Please enter a valid email address.",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+
+    const inquiryRecord = {
+      id: Date.now(),
+      car: selectedCar,
+      pickupDate,
+      returnDate,
+      pickupTime,
+      returnTime,
+      customer: formData,
+      timestamp: new Date().toISOString(),
+    };
+
+    const existingInquiries = localStorage.getItem("dsdgo_inquiries");
+    const inquiries = existingInquiries ? JSON.parse(existingInquiries) : [];
+    inquiries.push(inquiryRecord);
+    localStorage.setItem("dsdgo_inquiries", JSON.stringify(inquiries));
+
+    await new Promise((resolve) => setTimeout(resolve, 1200));
+
+    setSubmitStatus({
+      success: true,
+      message: `Thank you ${formData.name}! Your request for ${selectedCar?.brand} ${selectedCar?.name} has been sent. Our team will contact you shortly.`,
+    });
+
+    setIsSubmitting(false);
+
+    setTimeout(() => {
+      setShowForm(false);
+      setSelectedCar(null);
+      setSubmitStatus(null);
+    }, 4000);
+  };
+
+  const cancelInquiry = () => {
+    setShowForm(false);
+    setSelectedCar(null);
+    setSubmitStatus(null);
+  };
+
+  return (
+    <div className="app-wrapper">
+      <header className="main-header">
+        <Container>
+          <Row className="align-items-center">
+            <Col xs={12} md={6} className="text-center text-md-start">
+              <div className="logo-wrapper">
+                <Image
+                  src="/logo.png"
+                  alt="DSD GO Logo"
+                  className="logo-image"
+                />
+              </div>
+              
+            </Col>
+            <Col>
+              {" "}
+              <h1 className="brand-title">DSD GO</h1>
+              <h6 className="brand-tagline ">Rent premium cars · Pay economy</h6>
+            </Col>
+          </Row>
+        </Container>
+      </header>
+
+      <Container className="py-4">
+        <div className="date-card">
+          <Row className="g-3 align-items-end m-b date-row-bg">
+            <Col md={3}>
+              <Form.Label className="fw-bold">Pickup Date</Form.Label>
+              <Form.Control
+                type="date"
+                value={pickupDate}
+                onChange={handlePickupDateChange}
+                min={new Date().toISOString().split("T")[0]}
+                className="date-input"
+              />
+            </Col>
+            <Col md={2}>
+              <Form.Label className="fw-bold">Pickup Time</Form.Label>
+              <Form.Control
+                type="time"
+                value={pickupTime}
+                onChange={(e) => setPickupTime(e.target.value)}
+                className="border-danger"
+              />
+            </Col>
+            <Col md={3}>
+              <Form.Label className="fw-bold">Return Date</Form.Label>
+              <Form.Control
+                type="date"
+                value={returnDate}
+                onChange={handleReturnDateChange}
+                min={pickupDate || new Date().toISOString().split("T")[0]}
+                className="date-input"
+              />
+            </Col>
+            <Col md={2}>
+              <Form.Label className="fw-bold">Return Time</Form.Label>
+              <Form.Control
+                type="time"
+                value={returnTime}
+                onChange={(e) => setReturnTime(e.target.value)}
+                className="border-danger"
+              />
+            </Col>
+            <Col md={2}>
+              <Button
+                className="btn-apply w-100"
+                onClick={() => {
+                  if (pickupDate && returnDate) {
+                    setSubmitStatus({
+                      success: true,
+                      message: "Dates confirmed! Now select a car.",
+                    });
+                    setTimeout(() => setSubmitStatus(null), 2000);
+                  } else {
+                    setSubmitStatus({
+                      success: false,
+                      message: "Please select both dates.",
+                    });
+                    setTimeout(() => setSubmitStatus(null), 2000);
+                  }
+                }}
+              >
+                <i className="fas fa-calendar-check me-2"></i>Apply Dates
+              </Button>
+            </Col>
+          </Row>
+          {submitStatus &&
+            !submitStatus.message.includes("Thank you") &&
+            !submitStatus.message.includes("request") && (
+              <Alert
+                variant={submitStatus.success ? "success" : "danger"}
+                className="mt-3 mb-0"
+              >
+                {submitStatus.message}
+              </Alert>
+            )}
+        </div>
+
+        <h2 className="section-title">
+          <i className="fas fa-car-side me-2"></i>Our Premium Fleet
+        </h2>
+        <Row xs={1} md={2} lg={3} className="g-4">
+          {carsData.map((car) => (
+            <Col key={car.id}>
+              <Card className="car-card h-100 shadow-sm">
+                <Card.Img variant="top" src={car.image} className="car-image" />
+                <Card.Body>
+                  <Card.Title className="car-title">
+                    {car.brand} {car.name}
+                  </Card.Title>
+                  <Card.Text>
+                    <i className="fas fa-tachometer-alt me-2"></i> {car.fuel}
+                    <br />
+                    <i className="fas fa-user-friends me-2"></i> {car.seats}{" "}
+                    seats
+                    <br />
+                    <span className="car-price">
+                      from {car.pricePerDay} € / day
+                    </span>
+                  </Card.Text>
+                  <Button
+                    className="btn-check-availability w-100"
+                    onClick={() => handleRequestClick(car)}
+                  >
+                    <i className="fas fa-paper-plane me-2"></i>Check
+                    Availability
+                  </Button>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+
+        {showForm && selectedCar && (
+          <div id="inquiry-section" className="mt-5">
+            <div className="inquiry-card">
+              <div className="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+                <h3 className="inquiry-title">
+                  <i className="fas fa-envelope-open-text me-2"></i>
+                  Request for {selectedCar.brand} {selectedCar.name}
+                </h3>
+                <Button
+                  variant="outline-secondary"
+                  size="sm"
+                  onClick={cancelInquiry}
+                >
+                  <i className="fas fa-times"></i> Close
+                </Button>
+              </div>
+
+              <Alert variant="info" className="mb-3">
+                <i className="fas fa-calendar-alt me-2"></i>
+                <strong>Selected period:</strong> {pickupDate} {pickupTime}{" "}
+                until {returnDate} {returnTime}
+              </Alert>
+
+              <Form onSubmit={handleSubmitInquiry}>
+                <Row className="g-3">
+                  <Col md={6}>
+                    <Form.Group controlId="formName">
+                      <Form.Label>Full Name *</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        placeholder="John Doe"
+                        required
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col md={6}>
+                    <Form.Group controlId="formEmail">
+                      <Form.Label>Email Address *</Form.Label>
+                      <Form.Control
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        placeholder="john@example.com"
+                        required
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col md={6}>
+                    <Form.Group controlId="formPhone">
+                      <Form.Label>Phone Number *</Form.Label>
+                      <Form.Control
+                        type="tel"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        placeholder="+49 123 456789"
+                        required
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col md={12}>
+                    <Form.Group controlId="formMessage">
+                      <Form.Label>
+                        Your Message / Special Requests (optional)
+                      </Form.Label>
+                      <Form.Control
+                        as="textarea"
+                        rows={3}
+                        name="message"
+                        value={formData.message}
+                        onChange={handleInputChange}
+                        placeholder="e.g. child seat, insurance questions, special wishes..."
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col xs={12}>
+                    {submitStatus &&
+                      (submitStatus.message.includes("Thank you") ||
+                        submitStatus.message.includes("request")) && (
+                        <Alert
+                          variant={submitStatus.success ? "success" : "danger"}
+                        >
+                          {submitStatus.message}
+                        </Alert>
+                      )}
+                    <Button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="btn-send-request"
+                    >
+                      {isSubmitting ? (
+                        <>
+                          Sending{" "}
+                          <i className="fas fa-spinner fa-spin ms-2"></i>
+                        </>
+                      ) : (
+                        <>
+                          Send Request{" "}
+                          <i className="fas fa-arrow-right ms-2"></i>
+                        </>
+                      )}
+                    </Button>
+                    <span className="ms-3 text-muted small">
+                      <i className="fas fa-lock"></i> Your data is secure
+                    </span>
+                  </Col>
+                </Row>
+              </Form>
+              <div className="inquiry-footer">
+                <hr />
+                <i className="fas fa-info-circle"></i> DSD GO will contact you
+                within a few hours to confirm availability and complete the
+                booking.
+              </div>
+            </div>
+          </div>
+        )}
+        <footer className="main-footer">
+          <i className="fas fa-database me-1"></i> All inquiries are stored
+          locally (demo backend). Our team will respond via email/phone.
+        </footer>
+      </Container>
+    </div>
+  );
+};
+
+export default App;
