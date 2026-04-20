@@ -8,25 +8,46 @@
   color: rgb(9, 9, 9);
   padding: 1.2rem 0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-image: url("/background4.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 16px;
+  min-height: 280px;
+  color: white;
+  position: relative;
+  margin-top: 3px;
+  z-index: 1;
 }
 
-.logo-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 15px;
+.main-header::before {
+  border-radius: 16px;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgb(255, 255, 255) 0%,
+    rgba(255, 255, 255, 0.82) 25%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.145) 75%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  z-index: -1;
 }
 
 .logo-image {
-  height: 3rem;
-  width: auto;
-  object-fit: contain;
+  height: 5rem;
+  margin-top: 0;
 }
 
 .logo-fallback {
   background-color: #b22222;
   border-radius: 12px;
   display: flex;
-  align-items: center;
   justify-content: center;
   font-size: 28px;
   font-weight: bold;
@@ -34,20 +55,26 @@
 }
 
 .brand-title {
-  font-size: 3rem;
+
   font-weight: 900;
   letter-spacing: 1px;
   margin-right: 17rem;
   color: rgb(3, 3, 3);
+   line-height: 1
 }
 
 .brand-tagline {
   margin: 5px 0 0 0;
   opacity: 0.9;
   font-size: 0.9rem;
-   margin-right: 15.2rem;
+  margin-right: 15.2rem;
+  color: rgb(3, 3, 3);
+  
+   ;
 }
-
+.red {
+  color: #b22222;
+}
 .date-card {
   background-color: white;
   border-radius: 20px;
@@ -67,18 +94,6 @@
   box-shadow: 0 0 0 0.2rem rgba(139, 0, 0, 0.25);
 }
 
-.date-row-bg {
-  background-image: url("/background2.png");
-  background-position: center;
-  background-repeat: no-repeat;
-  border-radius: 16px;
-  padding: 60px 20px;
-  margin: 0;
-  min-height: 280px;
-  align-items: center;
-  justify-content: center;
-  color: white;
-}
 
 .btn-apply {
   background-color: #8b0000;

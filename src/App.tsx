@@ -217,22 +217,15 @@ const App: React.FC = () => {
   return (
     <div className="app-wrapper">
       <header className="main-header">
+        <Image src="/logo2.png" alt="DSD GO Logo" className="logo-image" />
+        <br />
+        <br />
         <Container>
           <Row className="align-items-center">
-            <Col xs={12} md={6} className="text-center text-md-start">
-              <div className="logo-wrapper">
-                <Image
-                  src="/logo.png"
-                  alt="DSD GO Logo"
-                  className="logo-image"
-                />
-              </div>
-              
-            </Col>
             <Col>
-              {" "}
-              <h1 className="brand-title">DSD GO</h1>
-              <h6 className="brand-tagline ">Rent premium cars · Pay economy</h6>
+              <h1 className="brand-title ">Rent premium cars.</h1>
+              <h1 className="brand-title">Fair Prices.</h1>
+              <h1 className="brand-title red">Unmatched Experience.</h1>
             </Col>
           </Row>
         </Container>
@@ -320,7 +313,7 @@ const App: React.FC = () => {
         <Row xs={1} md={2} lg={3} className="g-4">
           {carsData.map((car) => (
             <Col key={car.id}>
-              <Card className="car-card h-100 shadow-sm">
+              <Card className="car-card h-100 shadow-sm text-center">
                 <Card.Img variant="top" src={car.image} className="car-image" />
                 <Card.Body>
                   <Card.Title className="car-title">
