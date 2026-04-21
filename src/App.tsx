@@ -11,7 +11,9 @@ import {
 } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.scss";
-
+import { MdEmail } from "react-icons/md";
+import { RiCustomerService2Fill } from "react-icons/ri";
+import { MdLocationPin } from "react-icons/md";
 interface Car {
   id: number;
   name: string;
@@ -217,7 +219,23 @@ const App: React.FC = () => {
   return (
     <div className="app-wrapper">
       <header className="main-header">
-        <Image src="/logo2.png" alt="DSD GO Logo" className="logo-image" />
+        <div className="top-bar">
+          <div className="logo-wrapper">
+            <Image src="/logo2.png" alt="DSD GO Logo" className="logo-image" />
+          </div>
+          <div className="header-contact">
+            <p>
+              <MdEmail className="my-1" />
+              Dsdgorenrals@gmail.com
+            </p>
+            <p>
+              <RiCustomerService2Fill className="my-1" /> +1(240)899-0347
+            </p>
+            <p>
+              <MdLocationPin className="my-1" /> Virginia, USA
+            </p>
+          </div>
+        </div>
         <br />
         <br />
         <Container>
@@ -230,83 +248,82 @@ const App: React.FC = () => {
           </Row>
         </Container>
       </header>
+      <div className="date-card">
+        <Row className="d-flex justify-content-center align-items-end m-b">
+          <Col md={2}>
+            <Form.Label className="fw-bold">Pickup Date</Form.Label>
+            <Form.Control
+              type="date"
+              value={pickupDate}
+              onChange={handlePickupDateChange}
+              min={new Date().toISOString().split("T")[0]}
+              className="date-input"
+            />
+          </Col>
+          <Col md={2}>
+            <Form.Label className="fw-bold">Pickup Time</Form.Label>
+            <Form.Control
+              type="time"
+              value={pickupTime}
+              onChange={(e) => setPickupTime(e.target.value)}
+              className="border-danger"
+            />
+          </Col>
+          <Col md={2}>
+            <Form.Label className="fw-bold">Return Date</Form.Label>
+            <Form.Control
+              type="date"
+              value={returnDate}
+              onChange={handleReturnDateChange}
+              min={pickupDate || new Date().toISOString().split("T")[0]}
+              className="date-input"
+            />
+          </Col>
+          <Col md={2}>
+            <Form.Label className="fw-bold">Return Time</Form.Label>
+            <Form.Control
+              type="time"
+              value={returnTime}
+              onChange={(e) => setReturnTime(e.target.value)}
+              className="border-danger"
+            />
+          </Col>
+          <Col md={2}>
+            <Button
+              className="btn-apply w-100"
+              onClick={() => {
+                if (pickupDate && returnDate) {
+                  setSubmitStatus({
+                    success: true,
+                    message: "Dates confirmed! Now select a car.",
+                  });
+                  setTimeout(() => setSubmitStatus(null), 2000);
+                } else {
+                  setSubmitStatus({
+                    success: false,
+                    message: "Please select both dates.",
+                  });
+                  setTimeout(() => setSubmitStatus(null), 2000);
+                }
+              }}
+            >
+              <i className="fas fa-calendar-check me-2"></i>Apply Dates
+            </Button>
+          </Col>
+        </Row>
+        {submitStatus &&
+          !submitStatus.message.includes("Thank you") &&
+          !submitStatus.message.includes("request") && (
+            <Alert
+              variant={submitStatus.success ? "success" : "danger"}
+              className="mt-3 mb-0"
+            >
+              {submitStatus.message}
+            </Alert>
+          )}
+      </div>
 
       <Container className="py-4">
-        <div className="date-card">
-          <Row className="g-3 align-items-end m-b date-row-bg">
-            <Col md={3}>
-              <Form.Label className="fw-bold">Pickup Date</Form.Label>
-              <Form.Control
-                type="date"
-                value={pickupDate}
-                onChange={handlePickupDateChange}
-                min={new Date().toISOString().split("T")[0]}
-                className="date-input"
-              />
-            </Col>
-            <Col md={2}>
-              <Form.Label className="fw-bold">Pickup Time</Form.Label>
-              <Form.Control
-                type="time"
-                value={pickupTime}
-                onChange={(e) => setPickupTime(e.target.value)}
-                className="border-danger"
-              />
-            </Col>
-            <Col md={3}>
-              <Form.Label className="fw-bold">Return Date</Form.Label>
-              <Form.Control
-                type="date"
-                value={returnDate}
-                onChange={handleReturnDateChange}
-                min={pickupDate || new Date().toISOString().split("T")[0]}
-                className="date-input"
-              />
-            </Col>
-            <Col md={2}>
-              <Form.Label className="fw-bold">Return Time</Form.Label>
-              <Form.Control
-                type="time"
-                value={returnTime}
-                onChange={(e) => setReturnTime(e.target.value)}
-                className="border-danger"
-              />
-            </Col>
-            <Col md={2}>
-              <Button
-                className="btn-apply w-100"
-                onClick={() => {
-                  if (pickupDate && returnDate) {
-                    setSubmitStatus({
-                      success: true,
-                      message: "Dates confirmed! Now select a car.",
-                    });
-                    setTimeout(() => setSubmitStatus(null), 2000);
-                  } else {
-                    setSubmitStatus({
-                      success: false,
-                      message: "Please select both dates.",
-                    });
-                    setTimeout(() => setSubmitStatus(null), 2000);
-                  }
-                }}
-              >
-                <i className="fas fa-calendar-check me-2"></i>Apply Dates
-              </Button>
-            </Col>
-          </Row>
-          {submitStatus &&
-            !submitStatus.message.includes("Thank you") &&
-            !submitStatus.message.includes("request") && (
-              <Alert
-                variant={submitStatus.success ? "success" : "danger"}
-                className="mt-3 mb-0"
-              >
-                {submitStatus.message}
-              </Alert>
-            )}
-        </div>
-
         <h2 className="section-title">
           <i className="fas fa-car-side me-2"></i>Our Premium Fleet
         </h2>
