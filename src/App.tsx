@@ -130,7 +130,6 @@ const App: React.FC = () => {
         success: false,
         message: "Please select both pickup and return dates first.",
       });
-      setTimeout(() => setSubmitStatus(null), 4000);
       return;
     }
 
