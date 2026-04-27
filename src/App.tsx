@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Row,
@@ -8,20 +8,20 @@ import {
   Card,
   Alert,
   Image,
+  Modal,
 } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.scss";
 import { MdEmail } from "react-icons/md";
 import { RiCustomerService2Fill } from "react-icons/ri";
 import { MdLocationPin } from "react-icons/md";
+import { MdContactPhone } from "react-icons/md";
+import { RiContactsFill } from "react-icons/ri";
+
 interface Car {
-  id: number;
   name: string;
-  brand: string;
-  pricePerDay: number;
-  image: string;
-  fuel: string;
   seats: number;
+  fuel: string;
 }
 
 interface InquiryForm {
@@ -31,79 +31,17 @@ interface InquiryForm {
   message: string;
 }
 
-const carsData: Car[] = [
-  {
-    id: 1,
-    name: "XXXXXXX",
-    brand: "XXXXXXX",
-    pricePerDay: 189,
-    image: "/images/image1.png",
-    fuel: "Petrol",
-    seats: 4,
-  },
-  {
-    id: 2,
-    name: "XXXXXXX",
-    brand: "XXXXXXX",
-    pricePerDay: 229,
-    image: "/images/image2.png",
-    fuel: "Hybrid",
-    seats: 5,
-  },
-  {
-    id: 3,
-    name: "XXXXXXX",
-    brand: "XXXXXXX",
-    pricePerDay: 199,
-    image: "/images/image3.png",
-    fuel: "Electric",
-    seats: 4,
-  },
-  {
-    id: 4,
-    name: "XXXXXXX",
-    brand: "XXXXXXX",
-    pricePerDay: 279,
-    image: "/images/image4.png",
-    fuel: "Petrol",
-    seats: 5,
-  },
-  {
-    id: 5,
-    name: "XXXXXXX",
-    brand: "XXXXXXX",
-    pricePerDay: 169,
-    image: "/images/image5.png",
-    fuel: "Electric",
-    seats: 5,
-  },
-  {
-    id: 6,
-    name: "XXXXXXX",
-    brand: "XXXXXXX",
-    pricePerDay: 349,
-    image: "/images/image6.png",
-    fuel: "Diesel",
-    seats: 5,
-  },
-  {
-    id: 7,
-    name: "XXXXXXX",
-    brand: "XXXXXXX",
-    pricePerDay: 499,
-    image: "/images/image7.png",
-    fuel: "Petrol",
-    seats: 4,
-  },
-];
-
 const App: React.FC = () => {
+  const [carsData, setCarsData] = useState<Car[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const [pickupDate, setPickupDate] = useState<string>("");
   const [returnDate, setReturnDate] = useState<string>("");
   const [pickupTime, setPickupTime] = useState<string>("12:30");
   const [returnTime, setReturnTime] = useState<string>("08:30");
   const [selectedCar, setSelectedCar] = useState<Car | null>(null);
   const [showForm, setShowForm] = useState<boolean>(false);
+  const [showContactModal, setShowContactModal] = useState<boolean>(false);
+  const [showAboutModal, setShowAboutModal] = useState<boolean>(false);
   const [formData, setFormData] = useState<InquiryForm>({
     name: "",
     email: "",
@@ -115,6 +53,24 @@ const App: React.FC = () => {
     message: string;
   } | null>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+  useEffect(() => {
+    fetch("/data/cars.json")
+      .then((response) => response.json())
+      .then((data) => {
+        const carsArray: Car[] = Object.keys(data).map((key) => ({
+          name: data[key].name,
+          seats: data[key].seats,
+          fuel: data[key].fuel,
+        }));
+        setCarsData(carsArray);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error loading cars:", error);
+        setLoading(false);
+      });
+  }, []);
 
   const handlePickupDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPickupDate(e.target.value);
@@ -197,7 +153,7 @@ const App: React.FC = () => {
 
     setSubmitStatus({
       success: true,
-      message: `Thank you ${formData.name}! Your request for ${selectedCar?.brand} ${selectedCar?.name} has been sent. Our team will contact you shortly.`,
+      message: `Thank you ${formData.name}! Your request for ${selectedCar?.name} has been sent. Our team will contact you shortly.`,
     });
 
     setIsSubmitting(false);
@@ -215,23 +171,33 @@ const App: React.FC = () => {
     setSubmitStatus(null);
   };
 
+  if (loading) {
+    return (
+      <div className="app-wrapper d-flex justify-content-center align-items-center">
+        <h3>Loading cars...</h3>
+      </div>
+    );
+  }
+
   return (
-    <div className="app-wrapper">
+    <div>
       <header className="main-header">
         <div className="top-bar">
           <div className="logo-wrapper">
             <Image src="/logo2.png" alt="DSD GO Logo" className="logo-image" />
           </div>
           <div className="header-contact">
-            <p>
-              <MdEmail className="my-1" />
-              Dsdgorenrals@gmail.com
+            <p
+              onClick={() => setShowContactModal(true)}
+              style={{ cursor: "pointer" }}
+            >
+              <MdContactPhone className="my-1" /> Contact
             </p>
-            <p>
-              <RiCustomerService2Fill className="my-1" /> +1(240)899-0347
-            </p>
-            <p>
-              <MdLocationPin className="my-1" /> Virginia, USA
+            <p
+              onClick={() => setShowAboutModal(true)}
+              style={{ cursor: "pointer" }}
+            >
+              <RiContactsFill className="my-1" /> About Us
             </p>
           </div>
         </div>
@@ -247,6 +213,78 @@ const App: React.FC = () => {
           </Row>
         </Container>
       </header>
+      <Modal
+        show={showContactModal}
+        onHide={() => setShowContactModal(false)}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Contact Us</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>
+            <MdEmail className="me-2" /> <strong>Email:</strong>{" "}
+            Dsdgorenrals@gmail.com
+          </p>
+          <p>
+            <RiCustomerService2Fill className="me-2" /> <strong>Phone:</strong>{" "}
+            +1(240)899-0347
+          </p>
+          <p>
+            <MdLocationPin className="me-2" /> <strong>Address:</strong>{" "}
+            Virginia, USA
+          </p>
+          <hr />
+          <p>
+            <strong>Business Hours:</strong> Mon-Sun, 8:00 AM - 8:00 PM
+          </p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            onClick={() => setShowContactModal(false)}
+          >
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal
+        show={showAboutModal}
+        onHide={() => setShowAboutModal(false)}
+        centered
+        size="lg"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>About DSD GO</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <h5>DSDGO – Premium Car Rentals, Simplified</h5>
+          <p>
+            At DSDGO, we provide a seamless and reliable car rental experience
+            designed around convenience, quality, and trust. With over 2,500
+            successful trips and a consistent 5-star guest experience, we
+            specialize in delivering clean, well-maintained vehicles exactly
+            where and when you need them.
+          </p>
+          <p>
+            Whether you’re traveling through Washington Dulles (IAD), Reagan
+            National (DCA), or need a vehicle delivered to your home, DSDGO
+            offers flexible solutions tailored to your schedule. Every vehicle
+            is professionally detailed, fully fueled, and ready to go.
+          </p>
+          <p>
+            <strong>Our commitment is simple:</strong> no stress, no
+            surprises—just a smooth, premium rental experience from start to
+            finish.
+          </p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowAboutModal(false)}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
       <div className="date-card">
         <Row className="d-flex justify-content-center align-items-end m-b">
           <Col md={2}>
@@ -327,23 +365,24 @@ const App: React.FC = () => {
           <i className="fas fa-car-side me-2"></i>Our Premium Fleet
         </h2>
         <Row xs={1} md={2} lg={3} className="g-4">
-          {carsData.map((car) => (
-            <Col key={car.id}>
-              <Card className="car-card h-100 shadow-sm text-center">
-                <Card.Img variant="top" src={car.image} className="car-image" />
+          {carsData.map((car, index) => (
+            <Col key={index}>
+              <Card className="car-card h-100 shadow-sm">
+                <Card.Img
+                  variant="top"
+                  src={`/images/car${index + 1}.jpeg`}
+                  className="car-image"
+                />
                 <Card.Body>
-                  <Card.Title className="car-title">
-                    {car.brand} {car.name}
-                  </Card.Title>
+                  <Card.Title className="car-title text-center">{car.name}</Card.Title>
+                  <br />
                   <Card.Text>
-                    <i className="fas fa-tachometer-alt me-2"></i> {car.fuel}
+                    <i className="fas fa-tachometer-alt me-2"></i>Fuel type:{" "}
+                    {car.fuel}
                     <br />
-                    <i className="fas fa-user-friends me-2"></i> {car.seats}{" "}
-                    seats
+                    <i className="fas fa-user-friends me-2"></i>Number of seats:{" "}
+                    {car.seats} seats
                     <br />
-                    <span className="car-price">
-                      from {car.pricePerDay} € / day
-                    </span>
                   </Card.Text>
                   <Button
                     className="btn-check-availability w-100"
@@ -364,7 +403,7 @@ const App: React.FC = () => {
               <div className="d-flex justify-content-between align-items-center mb-3 flex-wrap">
                 <h3 className="inquiry-title">
                   <i className="fas fa-envelope-open-text me-2"></i>
-                  Request for {selectedCar.brand} {selectedCar.name}
+                  Request for {selectedCar.name}
                 </h3>
                 <Button
                   variant="outline-secondary"
@@ -417,7 +456,7 @@ const App: React.FC = () => {
                         name="phone"
                         value={formData.phone}
                         onChange={handleInputChange}
-                        placeholder="+49 123 456789"
+                        placeholder="+1 234 567 890"
                         required
                       />
                     </Form.Group>
@@ -480,8 +519,7 @@ const App: React.FC = () => {
           </div>
         )}
         <footer className="main-footer">
-          <i className="fas fa-database me-1"></i> All inquiries are stored
-          locally (demo backend). Our team will respond via email/phone.
+          <i className="fas fa-database me-1"></i>
         </footer>
       </Container>
     </div>

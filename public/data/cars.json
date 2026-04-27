@@ -1,0 +1,93 @@
+{
+    "car1": {
+        "name": "Honda Odyssey 2025",
+        "seats": 8,
+        "fuel": "Gas"
+    },
+ "car2": {
+        "name": "Toyota Sienna 2023",
+        "seats": 7,
+        "fuel": "Gas"
+    },
+ "car3": {
+        "name": "Toyota Sienna 2024",
+        "seats": 7,
+        "fuel": "Gas"
+    },
+    "car4": {
+        "name": "Toyota Tacoma 2024",
+        "seats": 5,
+        "fuel": "Gas"
+    },
+ "car5": {
+        "name": "Toyota Ra4 2024",
+        "seats": 5,
+        "fuel": "Gas"
+    },
+ "car6": {
+        "name": "Toyota Ra4 2024",
+        "seats": 5,
+        "fuel": "Gas"
+    },
+    "car7": {
+        "name": "Toyota Ra4 2025",
+        "seats": 5,
+        "fuel": "Gas"
+    },
+ "car8": {
+        "name": "Toyota Ra4 2025",
+        "seats": 5,
+        "fuel": "Gas"
+    },
+ "car9": {
+        "name": "Toyota Ra4 2025",
+        "seats": 5,
+        "fuel": "Gas"
+    },
+
+    "car10": {
+        "name": "Toyota 4Runner 2021",
+        "seats": 5,
+        "fuel": "Gas"
+    },
+ "car11": {
+        "name": "Toyota Highlander 2021",
+        "seats": 5,
+        "fuel": "Hybrid/Gas"
+    },
+ "car12": {
+        "name": "Toyota bZ4X 2024",
+        "seats": 5,
+        "fuel": "Electric"
+    },
+ "car13": {
+        "name": "Toyota Camry 2025",
+        "seats": 5,
+        "fuel": "Hybrid/Gas"
+    },
+ "car14": {
+        "name": "Toyota Camry 2025",
+        "seats": 5,
+        "fuel": "Hybrid/Gas"
+    },
+ "car15": {
+        "name": "Toyota Corolla Cross 2024",
+        "seats": 5,
+        "fuel": "Gas"
+    },
+ "car16": {
+        "name": "Toyota Corolla Cross 2024",
+        "seats": 5,
+        "fuel": "Gas"
+    },
+ "car17": {
+        "name": "Lexus RX 2024",
+        "seats": 5,
+        "fuel": "Gas"
+    },
+ "car18": {
+        "name": "Lexus RX 2024",
+        "seats": 5,
+        "fuel": "Gas"
+    }
+}
