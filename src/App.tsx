@@ -1,14 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Form,
-  Button,
-  Card,
-  Alert,
-  Image,
-} from "react-bootstrap";
+import { Container, Row, Col, Button, Card, Image } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.scss";
 import { MdContactPhone } from "react-icons/md";
@@ -17,6 +8,7 @@ import { Contact } from "./component/Contact";
 import { Aboutus } from "./component/Aboutus";
 import type { Car, InquiryForm } from "./types/interface";
 import RequestForm from "./component/RequestForm";
+import { DateCard } from "./component/DateCard";
 
 const App: React.FC = () => {
   const [carsData, setCarsData] = useState<Car[]>([]);
@@ -58,8 +50,6 @@ const App: React.FC = () => {
         setLoading(false);
       });
   }, []);
-
-
 
   const handleRequestClick = (car: Car) => {
     if (!pickupDate || !returnDate) {
@@ -203,80 +193,18 @@ const App: React.FC = () => {
         setShowAboutModal={setShowAboutModal}
       />
 
-      <div className="date-card">
-        <Row className="d-flex justify-content-center align-items-end m-b">
-          <Col md={2}>
-            <Form.Label className="fw-bold">Pickup Date</Form.Label>
-            <Form.Control
-              type="date"
-              value={pickupDate}
-              onChange={(e) => setPickupDate(e.target.value)}
-              min={new Date().toISOString().split("T")[0]}
-              className="date-input"
-            />
-          </Col>
-          <Col md={2}>
-            <Form.Label className="fw-bold">Pickup Time</Form.Label>
-            <Form.Control
-              type="time"
-              value={pickupTime}
-              onChange={(e) => setPickupTime(e.target.value)}
-              className="border-danger"
-            />
-          </Col>
-          <Col md={2}>
-            <Form.Label className="fw-bold">Return Date</Form.Label>
-            <Form.Control
-              type="date"
-              value={returnDate}
-              onChange={(e) => setReturnDate(e.target.value)}
-              min={pickupDate || new Date().toISOString().split("T")[0]}
-              className="date-input"
-            />
-          </Col>
-          <Col md={2}>
-            <Form.Label className="fw-bold">Return Time</Form.Label>
-            <Form.Control
-              type="time"
-              value={returnTime}
-              onChange={(e) => setReturnTime(e.target.value)}
-              className="border-danger"
-            />
-          </Col>
-          <Col md={2}>
-            <Button
-              className="btn-apply w-100"
-              onClick={() => {
-                if (pickupDate && returnDate) {
-                  setSubmitStatus({
-                    success: true,
-                    message: "Dates confirmed! Now select a car.",
-                  });
-                  setTimeout(() => setSubmitStatus(null), 2000);
-                } else {
-                  setSubmitStatus({
-                    success: false,
-                    message: "Please select both dates.",
-                  });
-                  setTimeout(() => setSubmitStatus(null), 2000);
-                }
-              }}
-            >
-              <i className="fas fa-calendar-check me-2"></i>Apply Dates
-            </Button>
-          </Col>
-        </Row>
-        {submitStatus &&
-          !submitStatus.message.includes("Thank you") &&
-          !submitStatus.message.includes("request") && (
-            <Alert
-              variant={submitStatus.success ? "success" : "danger"}
-              className="mt-3 mb-0"
-            >
-              {submitStatus.message}
-            </Alert>
-          )}
-      </div>
+      <DateCard
+        pickupDate={pickupDate}
+        setPickupDate={setPickupDate}
+        returnDate={returnDate}
+        setReturnDate={setReturnDate}
+        pickupTime={pickupTime}
+        setPickupTime={setPickupTime}
+        returnTime={returnTime}
+        setReturnTime={setReturnTime}
+        setSubmitStatus={setSubmitStatus}
+        submitStatus={submitStatus}
+      />
 
       <Container className="py-4">
         <h2 className="section-title">
