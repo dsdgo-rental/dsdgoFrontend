@@ -59,13 +59,7 @@ const App: React.FC = () => {
       });
   }, []);
 
-  const handlePickupDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPickupDate(e.target.value);
-  };
 
-  const handleReturnDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setReturnDate(e.target.value);
-  };
 
   const handleRequestClick = (car: Car) => {
     if (!pickupDate || !returnDate) {
@@ -216,7 +210,7 @@ const App: React.FC = () => {
             <Form.Control
               type="date"
               value={pickupDate}
-              onChange={handlePickupDateChange}
+              onChange={(e) => setPickupDate(e.target.value)}
               min={new Date().toISOString().split("T")[0]}
               className="date-input"
             />
@@ -235,7 +229,7 @@ const App: React.FC = () => {
             <Form.Control
               type="date"
               value={returnDate}
-              onChange={handleReturnDateChange}
+              onChange={(e) => setReturnDate(e.target.value)}
               min={pickupDate || new Date().toISOString().split("T")[0]}
               className="date-input"
             />
