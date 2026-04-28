@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Button, Card, Image } from "react-bootstrap";
+import { Container, Row, Col, Image } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.scss";
 import { MdContactPhone } from "react-icons/md";
@@ -9,6 +9,7 @@ import { Aboutus } from "./component/Aboutus";
 import type { Car, InquiryForm } from "./types/interface";
 import RequestForm from "./component/RequestForm";
 import { DateCard } from "./component/DateCard";
+import { CarCard } from "./component/CarCard";
 
 const App: React.FC = () => {
   const [carsData, setCarsData] = useState<Car[]>([]);
@@ -210,41 +211,7 @@ const App: React.FC = () => {
         <h2 className="section-title">
           <i className="fas fa-car-side me-2"></i>Our Premium Fleet
         </h2>
-        <Row xs={1} md={2} lg={3} className="g-4">
-          {carsData.map((car, index) => (
-            <Col key={index}>
-              <Card className="car-card h-100 shadow-sm">
-                <Card.Img
-                  variant="top"
-                  src={`/images/car${index + 1}.jpeg`}
-                  className="car-image"
-                />
-                <Card.Body>
-                  <Card.Title className="car-title text-center">
-                    {car.name}
-                  </Card.Title>
-                  <br />
-                  <Card.Text>
-                    <i className="fas fa-tachometer-alt me-2"></i>Fuel type:{" "}
-                    {car.fuel}
-                    <br />
-                    <i className="fas fa-user-friends me-2"></i>Number of seats:{" "}
-                    {car.seats} seats
-                    <br />
-                  </Card.Text>
-                  <Button
-                    className="btn-check-availability w-100"
-                    onClick={() => handleRequestClick(car)}
-                  >
-                    <i className="fas fa-paper-plane me-2"></i>Check
-                    Availability
-                  </Button>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
-        </Row>
-
+        <CarCard carsData={carsData} handleRequestClick={handleRequestClick} />
         <RequestForm
           showForm={showForm}
           selectedCar={selectedCar}
