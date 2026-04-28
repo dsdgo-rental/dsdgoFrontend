@@ -15,19 +15,9 @@ import { MdContactPhone } from "react-icons/md";
 import { RiContactsFill } from "react-icons/ri";
 import { Contact } from "./component/Contact";
 import { Aboutus } from "./component/Aboutus";
+import type { Car, InquiryForm } from "./types/interface";
 
-interface Car {
-  name: string;
-  seats: number;
-  fuel: string;
-}
 
-interface InquiryForm {
-  name: string;
-  email: string;
-  phone: string;
-  message: string;
-}
 
 const App: React.FC = () => {
   const [carsData, setCarsData] = useState<Car[]>([]);
