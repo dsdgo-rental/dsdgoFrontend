@@ -12,11 +12,9 @@ import {
 } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.scss";
-import { MdEmail } from "react-icons/md";
-import { RiCustomerService2Fill } from "react-icons/ri";
-import { MdLocationPin } from "react-icons/md";
 import { MdContactPhone } from "react-icons/md";
 import { RiContactsFill } from "react-icons/ri";
+import { Contact } from "./component/Contact";
 
 interface Car {
   name: string;
@@ -213,41 +211,10 @@ const App: React.FC = () => {
           </Row>
         </Container>
       </header>
-      <Modal
-        show={showContactModal}
-        onHide={() => setShowContactModal(false)}
-        centered
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Contact Us</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <p>
-            <MdEmail className="me-2" /> <strong>Email:</strong>{" "}
-            rentyourcar@dsdgorentals.com
-          </p>
-          <p>
-            <RiCustomerService2Fill className="me-2" /> <strong>Phone:</strong>{" "}
-            +1(240)899-0347
-          </p>
-          <p>
-            <MdLocationPin className="me-2" /> <strong>Address:</strong>{" "}
-            Virginia, USA
-          </p>
-          <hr />
-          <p>
-            <strong>Business Hours:</strong> Mon-Sun, 8:00 AM - 8:00 PM
-          </p>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            variant="secondary"
-            onClick={() => setShowContactModal(false)}
-          >
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <Contact
+        showContactModal={showContactModal}
+        setShowContactModal={setShowContactModal}
+      />
       <Modal
         show={showAboutModal}
         onHide={() => setShowAboutModal(false)}
@@ -374,7 +341,9 @@ const App: React.FC = () => {
                   className="car-image"
                 />
                 <Card.Body>
-                  <Card.Title className="car-title text-center">{car.name}</Card.Title>
+                  <Card.Title className="car-title text-center">
+                    {car.name}
+                  </Card.Title>
                   <br />
                   <Card.Text>
                     <i className="fas fa-tachometer-alt me-2"></i>Fuel type:{" "}
