@@ -224,7 +224,7 @@ const App: React.FC = () => {
         <Modal.Body>
           <p>
             <MdEmail className="me-2" /> <strong>Email:</strong>{" "}
-            Dsdgorenrals@gmail.com
+            rentyourcar@dsdgorentals.com
           </p>
           <p>
             <RiCustomerService2Fill className="me-2" /> <strong>Phone:</strong>{" "}
