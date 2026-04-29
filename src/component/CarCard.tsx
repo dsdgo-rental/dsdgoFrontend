@@ -1,6 +1,7 @@
 import { Row, Col, Button, Card } from "react-bootstrap";
+import type { CarCardProps } from "../types/interface";
 
-export const CarCard = ({ carsData, handleRequestClick }) => {
+export const CarCard = ({ carsData, handleRequestClick }: CarCardProps) => {
   return (
     <Row xs={1} md={2} lg={3} className="g-4">
       {carsData.map((car, index) => (

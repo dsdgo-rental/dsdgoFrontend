@@ -1,7 +1,8 @@
 import { Button, Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import type { AboutusProps } from "../types/interface";
 
-export const Aboutus = ({ showAboutModal, setShowAboutModal }) => {
+export const Aboutus = ({ showAboutModal, setShowAboutModal }: AboutusProps) => {
   return (
     <Modal
       show={showAboutModal}

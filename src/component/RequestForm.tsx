@@ -1,4 +1,5 @@
 import { Modal, Row, Col, Form, Button, Alert } from "react-bootstrap";
+import type { RequestFormProps } from "../types/interface";
 
 const RequestForm = ({
   showForm,
@@ -13,7 +14,7 @@ const RequestForm = ({
   handleInputChange,
   submitStatus,
   isSubmitting,
-}) => {
+}: RequestFormProps) => {
   return (
     <Modal show={showForm} onHide={cancelInquiry} centered size="lg">
       <Modal.Header closeButton>
@@ -114,8 +115,8 @@ const RequestForm = ({
         </Form>
         <div className="inquiry-footer">
           <hr />
-          <i className="fas fa-info-circle"></i> DSD GO will contact you
-          within a few hours to confirm availability and complete the booking.
+          <i className="fas fa-info-circle"></i> DSD GO will contact you within
+          a few hours to confirm availability and complete the booking.
         </div>
       </Modal.Body>
     </Modal>

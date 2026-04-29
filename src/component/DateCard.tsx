@@ -1,4 +1,5 @@
 import { Row, Col, Form, Button, Alert } from "react-bootstrap";
+import type { DateCardProps } from "../types/interface";
 
 export const DateCard = ({
   pickupDate,
@@ -11,7 +12,7 @@ export const DateCard = ({
   setReturnTime,
   setSubmitStatus,
   submitStatus,
-}) => {
+}: DateCardProps) => {
   return (
     <div className="date-card">
       <Row className="d-flex justify-content-center align-items-end m-b">

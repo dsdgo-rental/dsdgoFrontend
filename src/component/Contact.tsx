@@ -1,10 +1,10 @@
 import { MdEmail } from "react-icons/md";
 import { RiCustomerService2Fill } from "react-icons/ri";
 import { MdLocationPin } from "react-icons/md";
-
+import type { ContactProps } from "../types/interface";
 import { Button, Modal } from "react-bootstrap";
 
-export const Contact = ({ showContactModal, setShowContactModal }) => {
+export const Contact = ({ showContactModal, setShowContactModal }: ContactProps) => {
   return (
     <Modal
       show={showContactModal}
