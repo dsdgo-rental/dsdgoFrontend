@@ -9,7 +9,7 @@ export const CarCard = ({ carsData, handleRequestClick }: CarCardProps) => {
           <Card className="car-card h-100 shadow-sm">
             <Card.Img
               variant="top"
-              src={`/car${index + 1}.jpeg`}
+              src={`/images/car${index + 1}.jpeg`}
               className="car-image"
             />
             <Card.Body>

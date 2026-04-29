@@ -36,7 +36,7 @@ const App: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   useEffect(() => {
-    fetch("/cars.json")
+    fetch("/data/cars.json")
       .then((response) => response.json())
       .then((data) => {
         const carsArray: Car[] = Object.keys(data).map((key) => ({
