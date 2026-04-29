@@ -1,4 +1,7 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/dsdgsfxt/public_html/
+    - cd /home/dsdgsfxt/repositories/dsdgoFrontend
+    - npm install
+    - npm run build
     - /bin/cp -r dist/* $DEPLOYPATH
