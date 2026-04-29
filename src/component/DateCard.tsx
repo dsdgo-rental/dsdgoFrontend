@@ -63,13 +63,13 @@ export const DateCard = ({
                   success: true,
                   message: "Dates confirmed! Now select a car.",
                 });
-                setTimeout(() => setSubmitStatus(null), 2000);
+                setTimeout(() => setSubmitStatus(null), 10000);
               } else {
                 setSubmitStatus({
                   success: false,
                   message: "Please select both dates.",
                 });
-                setTimeout(() => setSubmitStatus(null), 2000);
+                setTimeout(() => setSubmitStatus(null), 10000);
               }
             }}
           >
