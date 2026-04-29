@@ -28,6 +28,7 @@ const App: React.FC = () => {
     phone: "",
     message: "",
   });
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
   const [submitStatus, setSubmitStatus] = useState<{
     success: boolean;
     message: string;
@@ -105,28 +106,62 @@ const App: React.FC = () => {
     setIsSubmitting(true);
     setSubmitStatus(null);
 
-    const inquiryRecord = {
-      id: Date.now(),
-      car: selectedCar,
-      pickupDate,
-      returnDate,
-      pickupTime,
-      returnTime,
-      customer: formData,
-      timestamp: new Date().toISOString(),
-    };
+    try {
+      const response = await fetch(`${API_URL}/send-email`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          car: selectedCar?.name || "",
+          pickupDate: pickupDate,
+          pickupTime: pickupTime,
+          returnDate: returnDate,
+          returnTime: returnTime,
+          message: formData.message,
+        }),
+      });
 
-    const existingInquiries = localStorage.getItem("dsdgo_inquiries");
-    const inquiries = existingInquiries ? JSON.parse(existingInquiries) : [];
-    inquiries.push(inquiryRecord);
-    localStorage.setItem("dsdgo_inquiries", JSON.stringify(inquiries));
+      const result = await response.json();
 
-    await new Promise((resolve) => setTimeout(resolve, 1200));
+      if (result.success) {
+        const inquiryRecord = {
+          id: Date.now(),
+          car: selectedCar,
+          pickupDate,
+          returnDate,
+          pickupTime,
+          returnTime,
+          customer: formData,
+          timestamp: new Date().toISOString(),
+        };
 
-    setSubmitStatus({
-      success: true,
-      message: `Thank you ${formData.name}! Your request for ${selectedCar?.name} has been sent. Our team will contact you shortly.`,
-    });
+        const existingInquiries = localStorage.getItem("dsdgo_inquiries");
+        const inquiries = existingInquiries
+          ? JSON.parse(existingInquiries)
+          : [];
+        inquiries.push(inquiryRecord);
+        localStorage.setItem("dsdgo_inquiries", JSON.stringify(inquiries));
+
+        setSubmitStatus({
+          success: true,
+          message: `Thank you ${formData.name}! Your request for ${selectedCar?.name} has been sent. Our team will contact you shortly.`,
+        });
+      } else {
+        setSubmitStatus({
+          success: false,
+          message: result.message || "Failed to send. Please try again.",
+        });
+      }
+    } catch (error) {
+      console.error("Fetch error:", error);
+      setSubmitStatus({
+        success: false,
+        message:
+          "Something went wrong. Please try again later or contact support.",
+      });
+    }
 
     setIsSubmitting(false);
 
